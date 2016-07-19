@@ -14,7 +14,7 @@ function makeGraphs(error, apiDataOrders, apiDataUsers, apiDataCodes) {
 //Start Transformations
     var promoCodes = {};
     apiDataCodes.forEach(function(d) {
-        promoCodes[d.id] = d.code;
+        promoCodes[d._id] = d.code;
     });
 
 
@@ -43,7 +43,7 @@ function makeGraphs(error, apiDataOrders, apiDataUsers, apiDataCodes) {
     var drivers = {};
     apiDataUsers.forEach(function(d) {
         if(d.isDriver)
-		drivers[d.id] = d.completeName;
+		      drivers[d._id] = d.completeName;
         else {
             d.creationDate = moment(d.creationDate);
             if(d.creationDate < moment().startOf('week')) {
@@ -51,7 +51,6 @@ function makeGraphs(error, apiDataOrders, apiDataUsers, apiDataCodes) {
             }
         }
 	});
-
 
 	//Create a Crossfilter instance
 	var ndxOrders = crossfilter(dataSetOrders);

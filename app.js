@@ -10,7 +10,7 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
-connection = mongoose.createConnection(config.mongo_url  + '/' + config.mongo_db);
+mongoose.connect(config.mongo_url  + '/' + config.mongo_db);
 
 require('./app/routes')(app);
 

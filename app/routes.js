@@ -36,13 +36,6 @@ module.exports = function(app) {
   app.get('/api/data/users', function(req, res) {
     User.find({
       isAdmin: false
-    }, {
-      "id": 1,
-      "completeName": 1,
-      'acquisition': 1,
-      'store': 1,
-      'creationDate': 1,
-      "isDriver": 1
     }, function(error, users) {
       if(error)
         return res.send(error);
@@ -52,7 +45,7 @@ module.exports = function(app) {
 
   app.get('/api/data/promocodes', function(req, res) {
     PromoCode.find({}, {
-      "id": 1,
+      "_id": 1,
       "code": 1
     }, function(error, promocodes) {
       if(error)
