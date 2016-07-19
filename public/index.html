@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>Trusk Stats</title>
+	    <meta charset="UTF-8">
+		<!-- Include Required Prerequisites -->
+		<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css" />
+	  <link rel="stylesheet" type="text/css" href="css/dc.css">
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+	  <link rel="stylesheet" type="text/css" href="css/main.css">
+		<script src='js/d3.js' type='text/javascript'></script>
+		<script src='js/crossfilter.js' type='text/javascript'></script>
+		<script src='js/dc.js' type='text/javascript'></script>
+		<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+		<script src='js/leaflet-heat.js' type='text/javascript'></script>
+		<script type="text/javascript" src="js/underscore-min.js"></script>
+		<script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+		<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+		<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+		<script src='js/queue.js' type='text/javascript'></script>
+		<link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96">
+		<script src='js/Dashboard.js' type='text/javascript'></script>
+		<!-- Include Jquery here in a script tag -->
+		<style>
+		  #mapid { height: 200px; }
+			.gap-5 {
+				width:100%;
+				height:5px;
+			}
+			.gap-10 {
+				width:100%;
+				height:10px;
+			}
+			.gap-20 {
+				width:100%;
+				height:20px;
+			}
+			.gap-30 {
+				width:100%;
+				height:30px;
+			}
+		</style>
+		<style>
+		 #total-volumes {
+		   background: #ff7f00;
+		   width: 60px;
+		   font-size: 22px;
+		   color: white;
+		   text-align: center;
+		   padding-top: 2px;
+		   padding-bottom: 2px;
+		   padding-left: 10px;
+		   padding-right: 10px;
+		   height: 15px;
+		   line-height: normal;
+		 }
+		 #total-orders {
+		   background: #377eb8;
+		   width: 60px;
+		   font-size: 22px;
+		   color: white;
+		   text-align: center;
+		   padding-top: 2px;
+		   padding-bottom: 2px;
+		   padding-left: 10px;
+		   padding-right: 10px;
+		   height: 15px;
+		   line-height: normal;
+		 }
+		 #week-count {
+		  background: #377eb8;
+		  width: 60px;
+		  font-size: 22px;
+		  color: white;
+		  text-align: center;
+		  padding-top: 2px;
+		  padding-bottom: 2px;
+		  padding-left: 10px;
+		  padding-right: 10px;
+		  height: 15px;
+		  line-height: normal;
+		}
+		#retention-rate {
+		 background: #377eb8;
+		 width: 60px;
+		 font-size: 22px;
+		 color: white;
+		 text-align: center;
+		 padding-top: 2px;
+		 padding-bottom: 2px;
+		 padding-left: 10px;
+		 padding-right: 10px;
+		 height: 15px;
+		 line-height: normal;
+	   }
+	   #one-order-rate {
+		background: #377eb8;
+		width: 60px;
+		font-size: 15px;
+		color: white;
+		text-align: center;
+		padding-top: 2px;
+		padding-bottom: 2px;
+		padding-left: 10px;
+		padding-right: 10px;
+		height: 15px;
+		line-height: normal;
+	  }
+	  #two-order-rate {
+	   background: #377eb8;
+	   width: 60px;
+	   font-size: 15px;
+	   color: white;
+	   text-align: center;
+	   padding-top: 2px;
+	   padding-bottom: 2px;
+	   padding-left: 10px;
+	   padding-right: 10px;
+	   height: 15px;
+	   line-height: normal;
+	 }
+	 #three-to-five-order-rate {
+	  background: #377eb8;
+	  width: 60px;
+	  font-size: 15px;
+	  color: white;
+	  text-align: center;
+	  padding-top: 2px;
+	  padding-bottom: 2px;
+	  padding-left: 10px;
+	  padding-right: 10px;
+	  height: 15px;
+	  line-height: normal;
+	}
+	#six-to-ten-order-rate {
+	 background: #377eb8;
+	 width: 60px;
+	 font-size: 15px;
+	 color: white;
+	 text-align: center;
+	 padding-top: 2px;
+	 padding-bottom: 2px;
+	 padding-left: 10px;
+	 padding-right: 10px;
+	 height: 15px;
+	 line-height: normal;
+   }
+   #ten-plus-order-rate {
+	background: #377eb8;
+	width: 60px;
+	font-size: 15px;
+	color: white;
+	text-align: center;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+	height: 15px;
+	line-height: normal;
+  }
+		#total-users {
+		 background: #377eb8;
+		 width: 60px;
+		 font-size: 22px;
+		 color: white;
+		 text-align: center;
+		 padding-top: 2px;
+		 padding-bottom: 2px;
+		 padding-left: 10px;
+		 padding-right: 10px;
+		 height: 15px;
+		 line-height: normal;
+	   }
+	   #week-count-clients {
+		background: #377eb8;
+		width: 60px;
+		font-size: 22px;
+		color: white;
+		text-align: center;
+		padding-top: 2px;
+		padding-bottom: 2px;
+		padding-left: 10px;
+		padding-right: 10px;
+		height: 15px;
+		line-height: normal;
+	  }
+	   </style>
+
+	</head>
+	<body>
+		<!-- <div id="page-wrap"> -->
+			<!-- <button id='switcher1'>1</button>
+			<button id='switcher2'>2</button> -->
+	<div id='1'>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-6">
+				<div class="row">
+				<div class="col-md-12 dc-data-count dc-chart" id="data-count-order" style="float:left">
+					<h2>Trusk Analytics
+
+					<small>
+						<span class="filter-count"></span> / <span class="total-count"></span> orders |
+							<a id="all" href="#">Reset All</a>
+						</span>
+					</small>
+					</h2>
+				</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+							<h5><strong> 1 Course </strong></h5>
+							<span class="chart-title" id="one-order-rate"></span>
+					</div>
+					<div class="col-md-2">
+							<h5><strong> 2 Courses </strong></h5>
+							<span class="chart-title" id="two-order-rate"></span>
+					</div>
+					<div class="col-md-2">
+							<h5><strong> 3-5 </strong></h5>
+							<span class="chart-title" id="three-to-five-order-rate"></span>
+					</div>
+					<div class="col-md-2">
+							<h5><strong> 6-10 </strong></h5>
+							<span class="chart-title" id="six-to-ten-order-rate"></span>
+					</div>
+					<div class="col-md-2">
+							<h5><strong> 10+ </strong></h5>
+							<span class="chart-title" id="ten-plus-order-rate"></span>
+					</div>
+				</div>
+				</div>
+
+				<div class="col-md-4">
+					<!-- <div class="gap-5"></div> -->
+					<div class="gap-10"></div>
+					<!-- <div class="gap-20"></div> -->
+					<div class="row">
+						<div class="col-md-7">
+						<div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+							<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+							<span></span> <b class="caret"></b>
+						</div>
+						</div>
+						<div class="col-md-5" style="font-size:20px">
+							<div class="gap-5"></div>
+							<!-- <h3> -->
+							<a id="switcher1" href="#">User Stats</a>
+							<!-- </h3> -->
+						</div>
+					</div>
+					<div class="row">
+					<div class="col-md-3">
+							<h4><strong>Courses</strong></h4>
+							<span class="chart-title"  id="total-orders"></span>
+					</div>
+					<div class="col-md-3">
+							<h4><strong> Volume(€) </strong></h4>
+							<span class="chart-title" id="total-volumes"></span>
+					</div>
+					<div class="col-md-3">
+							<h4><strong> Weeks </strong></h4>
+							<span class="chart-title" id="week-count"></span>
+					</div>
+					<div class="col-md-3">
+							<h4><strong> Rétention </strong></h4>
+							<span class="chart-title" id="retention-rate"></span>
+					</div>
+					</div>
+				</div>
+
+				<div class="col-md-1" style="float:right">
+					<!-- <div class="row">
+							<a id="switcher1" href="#">clients stats</a>
+					</div> -->
+					<div class="gap-20"></div>
+					<div class="row" id="proDropDown">
+						<div class="chart-title">  <strong> Pro/Particulier </strong> </div>
+					</div>
+					<div class="gap-10"></div>
+					<div class="row" id="codeDropDown">
+						<div class="chart-title">  <strong> Code Promo </strong> </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="gap-30"></div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-5 col-md-6">
+					<div class="row">
+						<select id="chartDropDown">
+						  <option value="orders">Courses</option>
+						  <option value='volume'>Volume</option>
+						</select>
+						<div class="dc-chart" id="weekly-evolution-order">
+						<div class="chart-title">  <strong> Evolution par Semaine </strong> </div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-8 col-md-3">
+					<div class="col-md-1" id="driverDropDown">
+						<div class="chart-title">  <strong></strong> </div>
+					</div>
+					<div class="dc-chart" id="driver-chart"></div>
+					<div class="chart-title">  <strong> Top Truskers </strong> </div>
+				</div>
+				<div class="col-xs-8 col-md-3">
+					<div class="dc-chart" id="price-chart"></div>
+					<div class="chart-title">  <strong> Répartition par Prix </strong> </div>
+				</div>
+				<!-- <div class="col-xs-3">
+					<select id="mapDropDown">
+					  <option value="Start">Départ</option>
+					  <option value='End'>Arrivée</option>
+					</select>
+					<div id="mapid"></div>
+			    </div> -->
+			</div>
+			<div class="row">
+				<p></p>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-8 col-md-3">
+					<!-- <h4><strong>Courses</strong></h4> -->
+					<div class="dc-chart" id="day-of-week">
+					<div class="chart-title">  <strong> Répartition par Jour </strong> </div>
+				</div>
+				</div>
+				<div class="col-xs-3 pie-chart">
+					<div id="emergency-chart" class="dc-chart"></div>
+					<div class="chart-title">  <strong> Répartition par Urgence </strong> </div>
+				</div>
+				<div class="col-xs-8 col-md-3">
+					<div class="dc-chart" id="flux-chart"></div>
+					<div class="chart-title">  <strong> Répartition par Région </strong> </div>
+				</div>
+				<div class="col-xs-3">
+					<select id="mapDropDown">
+					  <option value="Start">Départ</option>
+					  <option value='End'>Arrivée</option>
+					</select>
+					<div id="mapid"></div>
+			    </div>
+			</div>
+
+		</div>
+	</div>
+		<!-- <div id='2'> -->
+
+	<div id='2'>
+
+		<div class="container-fluid">
+
+			<div class="row">
+				<div class="col-md-5">
+				<div class="gap-20"></div>
+				<div class="col-md-12 dc-data-count dc-chart" id="data-count-user" style="float:left">
+					<h2>Trusk Analytics
+
+					<small>
+						<span class="filter-count"></span> / <span class="total-count"></span> users |
+							<a id="all" href="#">Reset All</a>
+						</span>
+					</small>
+					</h2>
+				</div>
+				</div>
+
+				<div class="col-md-1">
+						<h4><strong>Users</strong></h4>
+						<span class="chart-title"  id="total-users"></span>
+				</div>
+				<div class="col-md-1">
+						<h4><strong> Weeks </strong></h4>
+						<span class="chart-title" id="week-count-clients"></span>
+				</div>
+
+				<div class="col-md-4">
+					<div class="gap-30"></div>
+					<div class="gap-5"></div>
+					<div class="row">
+						<div class="col-md-7">
+						<div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+							<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+							<span></span> <b class="caret"></b>
+						</div>
+						</div>
+						<div class="col-md-5" style="font-size:20px">
+							<div class="gap-5"></div>
+							<a id="switcher2" href="#">Order Stats</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-1" style="float:right">
+					<!-- <div class="row">
+							<a id="switcher2" href="#">orders stats</a>
+					</div> -->
+					<div class="gap-20"></div>
+					<div class="row" id="proDropDownClients">
+						<div class="chart-title">  <strong> Pro/Particulier </strong> </div>
+					</div>
+				</div>
+
+				<!-- <div class="col-md-1" style="float:right">
+					<div class="row" id="proDropDown">
+						<div class="chart-title">  <strong> Pro/Particulier </strong> </div>
+					</div>
+					<div class="row" id="codeDropDown">
+						<div class="chart-title">  <strong> Pro/Particulier </strong> </div>
+					</div>
+				</div> -->
+			</div>
+
+			<div class="gap-30"></div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="dc-chart" id="weekly-evolution-user"></div>
+					<div class="chart-title">  <strong> Acquisitions par Semaine </strong> </div>
+				</div>
+				<div class="col-md-6">
+					<div class="dc-chart" id="acquisition-chart"></div>
+					<div class="chart-title">  <strong> Canaux d'Acquisition </strong> </div>
+				</div>
+			</div>
+
+		</div>
+		</div>
+	<!-- </section> -->
+
+	<!-- </div> -->
+<!-- </div> -->
+<script>
+var first = $('#1');
+var second = $('#2');
+second.hide();
+$('#switcher1').click(function(){
+	first.hide();
+	second.show();
+	dc.filterAll();
+	dc.renderAll();
+});
+$('#switcher2').click(function(){
+	second.hide();
+	first.show();
+	dc.filterAll();
+	dc.renderAll();
+});
+</script>
+</body></html>

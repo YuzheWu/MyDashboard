@@ -1,0 +1,12 @@
+{
+    "name" : "truskmetrics",
+    "script":"app.js",
+    "watch": false,
+    "watch_options": {
+    "followSymlinks": true
+    },
+    "env": {
+        "NODE_ENV": "development"
+    },
+    "exec_mode"  : "fork_mode"
+}
